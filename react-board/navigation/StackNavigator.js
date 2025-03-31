@@ -10,24 +10,24 @@ const Stack = createStackNavigator();
 
 function StackNavigator() {
     return (
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator ScreenOptions={{
             headerStyle: {
-                backgroundColor: '#00a86b',
-                height: 100
+                backroundColor: '#d4531e',
+                borderBottomColor: "#d3d3d3",
+                height: 80
             },
             headerTintColor: '#fff',
-            headerBackTitleVisible: false,
+            headerBackTitleVisible: false
         }}
         >
             <Stack.Screen name="MainPage" 
                 options={{
-                    title: '세상의 모든 팁',
-                    animationTypeForReplace: 'pop'
+                    title: '꿀팁'
                 }}
                 component={MainPage}/>
             <Stack.Screen name="DetailPage" 
                 options={{
-                    title: '상세 내용'
+                    title: 'Detail'
                 }}
                 component={DetailPage}/>
 

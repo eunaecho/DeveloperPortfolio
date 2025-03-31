@@ -1,38 +1,35 @@
+import {tip} from '../data.json';
 import CardView from '../Components/CardView';
 import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, SafeAreaView} from 'react-native';
 import { useEffect, useState } from 'react';
 import LoadingPage from './LoadingPage';
-import { db } from '../firebaseConfig';
 
 const mainImg = 'https://storage.googleapis.com/sparta-image.appspot.com/lecture/main.png';
-const category = ['전체','일상생활', '반려견', '재테크'];
+const category = ['생활', '반려견', '재테크', '꿀팁 찜'];
 
 export default function MainPage() {
     const [dataSet, isDataSet] = useState(false)
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([])
     const [cate, setCate] = useState('전체')
-    
-    /***** useEffect() *****/
+
     useEffect(()=>{
-        db.ref('/tip').on('value', (snapshot) => {
-          if(snapshot.exists()) {
-            setData(snapshot.val())
-            isDataSet(true);
-            console.log('reDataSet')
-          } else {
-            console.log('no tips!');
-            return null;
-          }
-        });
-    },[])
-    
+      setTimeout(() => {
+
+      })
+
+      setData(tip)
+      isDataSet(true)        
+
+    },[cate])
+
     return(
       isDataSet?
-      <View style={styles.safeAreaContainer}>
+      <SafeAreaView style={styles.safeAreaContainer}>
         <ScrollView style={styles.scrollViewContainer}>
             <View style={styles.containerOne}>
+              <Text style={styles.category}>나만의 꿀팁</Text>
               <Image source={{uri:mainImg}}
-                    style={{width: Dimensions.get('screen').width-16, height:200, borderRadius:18}}></Image>
+                    style={{width: Dimensions.get('screen').width-10, height:200, borderRadius:20}}></Image>
             </View>
       
             <View style={styles.containerTwo}>
@@ -49,26 +46,20 @@ export default function MainPage() {
               </ScrollView>       
       
               <View style={styles.postBoard}>
-                { (cate=='전체') ?
-                  data.map((value, i)=> {
+                  {data.filter((content => content.category == cate )).map((value, i)=> {
                     return(
                       <CardView value={value} key={i}/>
                     )
-                  })
-                : data.filter((content => content.category == cate )).map((value, i)=> {
-                  return(
-                    <CardView value={value} key={i}/>
-                  )
-                  }) 
-                }
+                  })}
               </View>
             </View>
           </ScrollView>
-        </View>
+        </SafeAreaView>
     : <LoadingPage/>
     )
 
 }
+
 
 const styles = StyleSheet.create({
     safeAreaContainer: {
@@ -85,12 +76,14 @@ const styles = StyleSheet.create({
     containerOne: {
       flex: 1,
       alignItems: 'flex-start',
-      padding: 8
+      paddingLeft: 5,
+      paddingRight: 5
     },
     containerTwo: {
       flex: 4,
       flexDirection: 'column',
-      paddingHorizontal: 5,
+      paddingTop: 8,
+      paddingHorizontal: 3
     }, 
     horizonalScroll: {
       flex: 1,
@@ -103,8 +96,8 @@ const styles = StyleSheet.create({
       width: 100,
       height: 50,
       borderRadius: 12,
-      backgroundColor:'#00a86b',
-      marginHorizontal: 2,
+      backgroundColor:'#d4531e',
+      margin: 2
     },
     scrollBtnText: {
       color: '#fff',
