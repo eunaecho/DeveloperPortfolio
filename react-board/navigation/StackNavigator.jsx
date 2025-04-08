@@ -6,28 +6,33 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainPage from '../Pages/MainPage';
 import DetailPage from '../Pages/DetailPage';
 
+
 const Stack = createStackNavigator();
 
 function StackNavigator() {
     return (
-        <Stack.Navigator ScreenOptions={{
-            headerStyle: {
-                backroundColor: '#d4531e',
-                borderBottomColor: "#d3d3d3",
-                height: 80
-            },
-            headerTintColor: '#fff',
-            headerBackTitleVisible: false
+        <Stack.Navigator 
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#00a86b',
+                    height: 100
+                },
+                headerTintColor: '#fff',
+                headerBackTitleVisible: false,
+                
         }}
-        >
+        >   
             <Stack.Screen name="MainPage" 
                 options={{
-                    title: '꿀팁'
+                    title: '세상의 모든 팁',
+                    animationTypeForReplace: 'pop',
+                    headerTitleAlign: 'left',
+                    
                 }}
                 component={MainPage}/>
             <Stack.Screen name="DetailPage" 
                 options={{
-                    title: 'Detail'
+                    title: '상세 내용'
                 }}
                 component={DetailPage}/>
 
