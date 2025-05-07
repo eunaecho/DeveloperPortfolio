@@ -1,0 +1,138 @@
+ <!DOCTYPE html>
+ <head>
+ 	<meta charset="UTF-8">
+ 	
+ 	<link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css" rel="stylesheet">
+
+ 	<title>FAQ:자주 묻는 질문</title>
+
+
+ 	<style>
+ 		body {
+ 			padding: 10px 10px;
+ 			font-family: 'suit', sans-serif;
+            text-align: center;
+ 		}
+
+ 		h1 {
+ 			align-content: center;
+ 		}
+
+ 		.h1_eng {
+ 			font-size: 65px;
+ 			font-weight: 1000;
+ 			-webkit-text-stroke-width: 1px; color: #fffffb;
+			-webkit-text-stroke-color:#d4531e;
+ 		}
+
+ 		.h1_kor {
+ 			font-weight: 500;
+ 			font-size:22px;
+ 			color: #121212;
+ 		}
+
+ 		.container {
+ 			background-color: #fffffb;
+ 			margin: 0;
+ 		}
+ 		.faq_item {
+ 			margin: 0;
+ 			padding: 0;
+ 			margin-bottom: 10px;
+            text-align: left;
+ 		}
+
+ 		.faq_item.active {
+ 			margin-bottom: 10px;
+ 		}
+
+ 		.faq_question {
+ 			margin: 10px 5px;
+ 			padding: 15px 20px;
+ 			border: 1px solid #121212;
+ 			border-radius: 50px;
+ 			font-size: 20px;
+ 			color: #d4531e;
+            font-weight: 600;
+ 		}
+
+        .faq_question::after {
+            content: '+';
+            float: right;
+            color: #d4531e;
+        }
+
+ 		.faq_question.active {
+ 			color: #fffffb;
+ 			background-color: #d4531e;
+ 			border: 1px solid #d4531e;
+ 		}
+
+ 		.faq_question.active::after {
+ 			content: '-';
+ 			color: #fffffb;
+ 			background-color: #d4531e;
+ 		}
+
+ 		.faq_answer{
+ 			font-size:15px;
+ 			font-weight: 300;
+ 			padding: 0 18px;
+            max-height: 0px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            background-color: #fffffb;
+            letter-spacing: 0.025em;
+    		line-height: 1.5em;
+        }
+ 	</style>
+ </head>
+ <body>
+ 	<h1>
+ 		<div class="h1_eng">FAQ</div>
+ 		<div class="h1_kor">자주 묻는 질문</div>
+ 	</h1>
+
+ 	<div class='container'>
+ 		<div class="faq_item">
+			<h2 class='faq_question' onclick="showAnswer(this);">방수가 될까요?</h2> 			
+	 		<div class='faq_answer'>네, 촘촘한 고밀도 원단으로 생활 방수가 가능하며 머리카락과 같은 마이크로 이물질들을 방어합니다.</div>
+ 		</div>
+ 		<div class="faq_item">
+			<h2 class='faq_question' onclick="showAnswer(this);">U밴드? H밴드?</h2> 			
+	 		<div class='faq_answer'>스트랩 형태의 차이입니다. 앞치마에 스트랩의 종류를 선택하실 수 있습니다.<br><br><strong>U밴드</strong>는 목에 거는 형의 스트랩이며, 입고 벗기 가장 간편합니다.<br><br><strong>H밴드</strong>는 양 어깨와 등에서 무게를 분산시켜 오랜 시간 입고 있어도 편합니다.</div>
+ 		</div>
+ 		<div class="faq_item">
+			<h2 class='faq_question' onclick="showAnswer(this);">세탁은 어떻게 해야하죠?</h2> 			
+	 		<div class='faq_answer'>편하게 세탁 가능한 소재로 디자인 했습니다. 스트랩을 제외하고는 건조기를 사용하셔도 괜찮습니다.<br><br>하지만 예방 차원으로 첫 세탁은 꼭 단독으로 해주세요! (이염주의)</div>
+ 		</div>
+ 		<div class="faq_item">
+			<h2 class='faq_question' onclick="showAnswer(this);">무게는 어느정도 인가요?</h2> 			
+	 		<div class='faq_answer'>모델에 따라 사이즈에 따라 다르지만 <strong>평균 280g</strong>이며, 이는 얇은 가디건정도 입니다.<br>더 가벼우면 오히려 활동시 앞치마가 몸에서 벗어나려 해서 불편합니다.</div>
+ 		</div> 
+ 	</div>
+
+ 	<script type="text/javascript">
+ 		function showAnswer(element) {
+ 			var before = document.getElementsByClassName("active")[0]  //기존 활성화된 버튼
+            
+            /* 1. 맨처음 클릭한 경우 : falsy 값으로 조건문 나가고 클릭한 요소 활성화 
+               2. 전 클릭요소와 현재 클릭요소가 다른 경우 : 조건문 이행 후 요소 활성화
+               3. 전 클릭요소와 현재 클릭요소가 같은 경우 : 조건문 나가서 클릭요소의 내용 펼치기/접기
+            */
+            if (before && document.getElementsByClassName("active")[0] != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
+                before.nextElementSibling.style.maxHeight = null;   // 기존 활성화된 버튼 닫기
+                before.classList.remove("active");                  // 버튼 비활성화
+            }
+
+            var content = element.nextElementSibling;   // 해당 요소 내용
+            if (content.style.maxHeight != 0) {         // 클릭한 요소가 열려있는 경우
+                content.style.maxHeight = null;         // 접기
+                element.classList.remove("active");
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";  // 접혀있는 경우 펼치기
+            }
+ 		}
+ 	</script>
+ </body>
+ </html>
