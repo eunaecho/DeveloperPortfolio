@@ -1,10 +1,10 @@
 import CardView from '../Components/CardView';
-import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Modal, Pressable, SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity} from 'react-native';
 import { useEffect, useState } from 'react';
 import LoadingPage from './LoadingPage';
-import { db } from '../firebaseConfig';
+import { dbRef } from '../firebaseConfig';
+import { child, get } from 'firebase/database';
 
-// import StackNavigator from '../navigation/StackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LikeModal from './LikeModal';
@@ -13,8 +13,8 @@ const mainImg = 'https://storage.googleapis.com/sparta-image.appspot.com/lecture
 const category = ['전체','일상생활', '반려견', '재테크'];
 
 export default function MainPage() {
-    const [dataSet, isDataSet] = useState(false)
-    const [data, setData] = useState([]);
+    const [dataSet, setDataSet] = useState(false)
+    const [data, setData] = useState([])
     const [cate, setCate] = useState('전체')
 
     /* 모달창을 위한 설정 */
@@ -25,30 +25,29 @@ export default function MainPage() {
       setModalVisible(!modalVisible)
     }
 
-    /***** useEffect() *****/
     useEffect(()=>{
-        //LikeButton 아이콘 나타내기
-        navigation.setOptions({
+        navigation.setOptions({      //LikeButton 아이콘 나타내기
           headerRight: () => (
             <TouchableOpacity onPress={()=> setModalVisible(true)}>
                 <MaterialIcons style={{ marginRight: 10 }} name="favorite" size='24' color='white' />
             </TouchableOpacity>
         )})
 
-        db.ref('/tip').on('value', (snapshot) => {
+        get(child(dbRef, 'tip/')).then((snapshot) => {
+          console.log('snapshot: \n', snapshot)
           if(snapshot.exists()) {
             setData(snapshot.val())
-            isDataSet(true);
+            setDataSet(true);
             console.log('reDataSet')
           } else {
             console.log('no tips!');
             return null;
           }
         });
-    },[])
+    },[2000])
     
     return(
-      isDataSet?
+      dataSet?
       <View style={styles.safeAreaContainer}>
         <ScrollView style={styles.scrollViewContainer}>
             <View style={styles.containerOne}>
@@ -77,10 +76,10 @@ export default function MainPage() {
                     )
                   })
                 : data.filter((content => content.category == cate )).map((value, i)=> {
-                  return(
-                    <CardView value={value} key={i}/>
-                  )
-                  }) 
+                    return(
+                      <CardView value={value} key={i}/>
+                    )
+                  })
                 }
               </View>
             </View>

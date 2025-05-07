@@ -19,7 +19,6 @@ function StackNavigator() {
                 },
                 headerTintColor: '#fff',
                 headerBackTitleVisible: false,
-                
         }}
         >   
             <Stack.Screen name="MainPage" 

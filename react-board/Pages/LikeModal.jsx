@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, View, Text, Dimensions } from "react-native";
-import { db } from "../firebaseConfig";
+import { dbRef } from "../firebaseConfig";
+import { get, child } from "firebase/database";
 import { ScrollView } from "react-native-gesture-handler";
 
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;
 
 export default function LikeModal({modalVisible ,handleModalVisible}) {
-    const [title, setTitles] = useState([]);
-
-    function getTitle() {
-        db.ref('/like').once('value',(snapshot) => {
-            console.log('**** item : title *****')
-        snapshot.forEach(item => {
-            title.push(item.val().title)
-        });
-        })
-        console.log(title)
-    }
+    const [title, setTitles] = useState([])
 
     useEffect(()=> {
         if(modalVisible) {
-            db.ref('/like').once('value',(snapshot) => {
+            get(child(dbRef, 'like/')).then((snapshot) => {
                 const temp = []
                 snapshot.forEach(item => {
                     temp.push(item.val().title)
             })
             setTitles(temp) 
-        })
-
-        }
+        })}
     }, [modalVisible])
 
     return(

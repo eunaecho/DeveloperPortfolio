@@ -9,8 +9,7 @@ export default function CardView({value}) {
   const imageWidth = 100; // 이미지 너비
 
   return (
-    <TouchableOpacity style={cardStyle.container} 
-      onPress={()=> { navigation.navigate('DetailPage', { detailTip: value }); }}>
+    <TouchableOpacity style={cardStyle.container} onPress={()=> { navigation.navigate('DetailPage', { detailTip: value }); }}>
       <Image source={{uri:value.image}} 
               style={{width: 100, height: 80, margin: 2, borderRadius: 10}}></Image>
       <View style={cardStyle.textPost}>
@@ -25,18 +24,28 @@ export default function CardView({value}) {
 const cardStyle = StyleSheet.create({
       container: {
         flexDirection: 'row',
-        marginBottom: 2
+        paddingVertical: 2,
+        marginBottom: 2,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        shadowOpacity: 0.02,
+        shadowOffset: {
+          x: 0.05,
+          y: 0.05
+        },
+        shadowColor: '#090909'
       },
       textPost: {
         flexDirection: 'column',
         paddingHorizontal: 3
       },
       textTitle: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 700
       },
       textDesc: {
-        fontSize: 13,
+        fontSize: 12,
+        marginTop: 1,
         paddingRight: 3,
         color: '#090909'
       },

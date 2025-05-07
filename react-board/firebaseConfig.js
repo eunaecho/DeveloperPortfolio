@@ -1,5 +1,7 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/database";
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/database";
+import { initializeApp, getApps } from "firebase/app";
+import { getDatabase, ref } from "firebase/database";
 
 // //firebase 접속 정보
 // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -15,8 +17,11 @@ const firebaseConfig = {
   };
 
 // Firebase 중복 초기화 방지
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+if (getApps().length===0) {
+  initializeApp(firebaseConfig);
+} else {
+  const temp = getApps()[0];
+  console.log('temp : \n', temp)
 }
 
-export const db = firebase.database();
+export const dbRef = ref(getDatabase());

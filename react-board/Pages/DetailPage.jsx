@@ -1,39 +1,36 @@
 import { Share } from "react-native";
 import { SafeAreaView, StyleSheet, Image, View, Text, TouchableOpacity} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { db } from "../firebaseConfig"
 import { useEffect, useRef, useState } from "react";
-import { set } from "firebase/database";
+
+import { dbRef } from "../firebaseConfig"
+import { push, child, get, remove } from "firebase/database"
 
 export default function DetailPage( {route} ) {
     const tip = route.params.detailTip
     const [keep, setKeep] = useState(true);
     const key = useRef(null)      //tip의 저장 인덱스
 
-    /*
-    1. like db 있는지 없는지
-    1-1 없으면, 생성해서 인덱스 0에 추가
-    1-2 있으면, 해당 데이터 인덱스 찾아서 있으면 안넣고 없으면 넣음.
-    */
-
     const addLike = () => {
-        // keep이 가능한 상태라면
-        if(keep) {
-            db.ref('like/').push(tip, () => {
-                // console.log(index.current, ' added!')
-            }).then(()=> setKeep(false))
+        if(keep) {          // keep이 가능한 상태라면
+            key.current = push(child(dbRef,'like/'), tip).key;
+            setKeep(false);
+            console.log(':: ADD LIKE :: ', key.current)
         }
     }
 
     const removeLike = () => {
         if(!keep) {
-            db.ref('like/'+key.current).remove().then(()=> {
-                setKeep(true)
-            })
+            remove(child(dbRef, 'like/'+key.current))
+            .then(() =>{
+                console.log(':: REMOVE LIKE :: ', key.current)
+                key.current = null;
+                setKeep(true);
+            });
         }
     }
    
-    const onShare = async() => {
+    const onShare = async() => { 
         Share.share({
             message:
                 tip.title + '\n\n' + tip.desc + '\n\n'
@@ -41,7 +38,8 @@ export default function DetailPage( {route} ) {
     }
 
     const checkLikeStatus = async () => {
-        const snapshot = await db.ref('/like').once('value');
+        // const snapshot = await db.ref('/like').once('value');
+        const snapshot = await get(child(dbRef, 'like'));
 
         if(snapshot.exists()) {        //likeDB 있는 경우
             let found=false;
